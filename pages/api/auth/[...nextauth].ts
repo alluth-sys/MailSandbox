@@ -1,4 +1,5 @@
-import NextAuth, {NextAuthOptions} from 'next-auth';
+import NextAuth, {NextAuthOptions, Session} from 'next-auth';
+import {JWT} from 'next-auth/jwt';
 import AzureADProvider from 'next-auth/providers/azure-ad';
 
 export const authOptions: NextAuthOptions = {
@@ -15,35 +16,16 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks:{
-    async jwt({token,user,account}:{
-      token: any,
-      user: any,
-      account: any
-    }){
-      if (account && user) {
-        return {
-          accessToken: account.access_token,
-          accessTokenExpires: account?.expires_at
-            ? account.expires_at * 1000
-            : 0,
-          refreshToken: account.refresh_token,
-          user,
-        };
+    async jwt({token,account,user}): Promise<JWT>{
+      if (account) {
+        token.accessToken = account.access_token;
+        token.user = user;
       }
-
-      if (Date.now() < token.accessTokenExpires - 100000 || 0) {
-        return token;
-      }
+      return token;
     },
-    async session({ session, token }:{
-      session: any,
-      token: any
-    }){
-      if (session) {
-        session.user = token.user;
-        session.error = token.error;
+    async session({ session, token }): Promise<Session>{
         session.accessToken = token.accessToken;
-        } 
+        session.user = token.user;
         return session;
       }
     }

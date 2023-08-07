@@ -11,6 +11,7 @@ export default function Footer() {
         alt='iii-logo'
         width={150}
         height={30}
+        priority
         ></Image>
     </footer>
     

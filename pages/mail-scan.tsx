@@ -10,7 +10,6 @@ export default function MailScan() {
   useEffect(()=>{
     if(!session) return
     axios.get("https://graph.microsoft.com/v1.0/me/messages",{
-      //@ts-ignore
       headers:{Authorization:`Bearer ${session.accessToken}`}
     })
     .then((res)=>{
@@ -25,7 +24,7 @@ export default function MailScan() {
     <div>
       {mailData && 
         <div>
-          {mailData.map((value,i)=>{
+          {mailData.map((value)=>{
             return <div key={value.id}>{value.subject}</div>
           })}
         </div>
