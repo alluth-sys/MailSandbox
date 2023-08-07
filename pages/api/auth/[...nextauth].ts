@@ -20,7 +20,6 @@ export const authOptions: NextAuthOptions = {
       user: any,
       account: any
     }){
-      console.log(account)
       if (account && user) {
         return {
           accessToken: account.access_token,

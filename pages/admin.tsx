@@ -4,7 +4,6 @@ import AccessDenied from '../components/AccessDenied/access-denied';
 export default function Page() {
   const { data: session } = useSession();
   
-
   if (!session) {
     return (
         <AccessDenied />
