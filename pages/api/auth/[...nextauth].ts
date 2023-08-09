@@ -16,16 +16,14 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks:{
-    async jwt({token,account,user}): Promise<JWT>{
+    async jwt({token,account}): Promise<JWT>{
       if (account) {
         token.accessToken = account.access_token;
-        token.user = user;
       }
       return token;
     },
     async session({ session, token }): Promise<Session>{
         session.accessToken = token.accessToken;
-        session.user = token.user;
         return session;
       }
     }

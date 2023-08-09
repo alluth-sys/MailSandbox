@@ -1,0 +1,30 @@
+.card{
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem
+}
+
+.end-content{
+    margin-top: 1rem;
+    width: 100%;
+    justify-content: flex-end;
+    display: flex;
+}
+
+.mail-item{
+    display: flex;
+    flex-direction: column;
+}
+
+.source-list{
+    font-size: small;
+    color: gray;
+}
