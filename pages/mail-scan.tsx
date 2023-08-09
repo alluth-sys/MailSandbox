@@ -1,3 +1,5 @@
+import AccessDenied from "@/components/AccessDenied/access-denied";
+import {useSnackbar} from "@/hooks/useSnackBar";
 import * as MicrosoftGraph from "@microsoft/microsoft-graph-types";
 import RadarIcon from '@mui/icons-material/Radar';
 import {Button} from "@mui/material";
@@ -7,7 +9,15 @@ import TablePagination from '@mui/material/TablePagination';
 import axios from 'axios';
 import {useSession} from "next-auth/react";
 import {useEffect, useState} from "react";
+import {v4 as uuidv4} from 'uuid';
 import styles from '../styles/MailScan.module.css';
+
+interface Task{
+  taskID: string;
+  userID: string;
+  token: string;
+  message_list: string[];
+}
 
 
 export default function MailScan() {
@@ -20,6 +30,7 @@ export default function MailScan() {
   const [checkedMail, setCheckedMail] = useState<string[]>([]);
   const unauthenticated = status === 'unauthenticated';
   const label = { inputProps: { 'aria-label': 'mail-check' } };
+  const showSnackbar = useSnackbar();
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
@@ -53,6 +64,26 @@ export default function MailScan() {
       setCheckedMail(current => [...current, id])
     }
   }
+
+  const onScan = () =>{
+    if(!data) return;
+
+    const payload: Task = {
+      taskID: uuidv4(),
+      userID: data.user.email,
+      token: data.accessToken,
+      message_list: checkedMail,
+    }
+
+    axios.post("http://localhost:8777/task",{
+      ...payload,
+    }).then((res)=>{
+      if(res.statusText !== 'OK') return;
+      showSnackbar(`Successfully created task ${res.data}`)
+    }).catch((e)=>{
+      showSnackbar(e);
+    })
+  }
   
   useEffect(()=>{
     if(!data || unauthenticated) return
@@ -77,6 +108,12 @@ export default function MailScan() {
       setLoading(false);
     })
   },[data, unauthenticated, rowsPerPage, page])
+
+  if (!data) {
+    return (
+        <AccessDenied />
+    );
+  }
 
   return (
     <div>
@@ -111,6 +148,7 @@ export default function MailScan() {
         <Button 
           variant="contained"
           disabled={checkedMail.length===0}
+          onClick={onScan}
           >
             <RadarIcon/>
             Scan
