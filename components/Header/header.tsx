@@ -92,6 +92,13 @@ export default function Header() {
             </Link>
           </li>
           <li className={styles.navItem}>
+            <Link href='/task' passHref>
+            <Button variant='text'>
+                Task
+            </Button>
+            </Link>
+          </li>
+          <li className={styles.navItem}>
             <Link href='/admin' passHref>
             <Button variant='text'>
                 Admin

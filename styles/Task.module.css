@@ -1,0 +1,17 @@
+.task-table{
+    width: fit-content;
+    min-width: 650px;
+    border: 1px solid lightgray;
+}
+
+.cell{
+    display: flex;
+    align-items: center;
+    color: green;
+}
+
+.cell-load{
+    display: flex;
+    align-items: center;
+    color: orange;
+}
