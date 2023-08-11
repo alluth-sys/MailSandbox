@@ -23,12 +23,14 @@ interface Task{
 export default function MailScan() {
   const { data, status } = useSession();
   const [mailData, setData] = useState<MicrosoftGraph.Message[]>();
+  const unauthenticated = status === 'unauthenticated';
+
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+
   const [checkedMail, setCheckedMail] = useState<string[]>([]);
-  const unauthenticated = status === 'unauthenticated';
   const label = { inputProps: { 'aria-label': 'mail-check' } };
   const showSnackbar = useSnackbar();
 
@@ -79,7 +81,8 @@ export default function MailScan() {
       ...payload,
     }).then((res)=>{
       if(res.statusText !== 'OK') return;
-      showSnackbar(`Successfully created task ${res.data}`)
+      console.log(res);
+      showSnackbar(`Successfully created task ${res.data.taskID}`)
     }).catch((e)=>{
       showSnackbar(e);
     })
