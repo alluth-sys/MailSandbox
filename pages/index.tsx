@@ -1,3 +1,4 @@
+import Footer from '@/components/Footer/footer';
 import Head from 'next/head';
 import Image from 'next/image';
 import logo from '../public/kowala-logo.png';
@@ -20,6 +21,7 @@ export default function IndexPage() {
             A Sandbox System to detect malware
           </h4>
         </main>
+        <Footer/>
       </div>
   );
 }
