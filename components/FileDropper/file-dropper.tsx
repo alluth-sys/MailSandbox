@@ -43,7 +43,7 @@ export default function FileDropper({setFileHandler}:{
             <input 
             className={styles['file-input']} 
             type="file" 
-            accept="image/*" id='filedrop' 
+            accept=".pdf, .doc, .docx, .xlsx" id='filedrop' 
             onChange={onFileChangeHandler}></input>
         </label>
         

@@ -1,5 +1,11 @@
-.container{
+.dropper-container{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.btn-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
 }

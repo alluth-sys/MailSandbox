@@ -89,14 +89,3 @@ export default function Task() {
         </div>
   )
 }
-
-
-// {tasks?.map((v)=>{
-//     return (
-//         <Link key={v.taskID} href={`/task/${v.taskID}`} passHref>
-//             <li>
-//                 {v.taskID} 
-//             </li>
-//         </Link>
-//     )
-// })}
