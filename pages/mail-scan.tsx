@@ -6,7 +6,7 @@ import {Button} from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 import LinearProgress from '@mui/material/LinearProgress';
 import TablePagination from '@mui/material/TablePagination';
-import axios from 'axios';
+import axios, {AxiosError} from 'axios';
 import {useSession} from "next-auth/react";
 import {useEffect, useState} from "react";
 import {v4 as uuidv4} from 'uuid';
@@ -81,7 +81,6 @@ export default function MailScan() {
       ...payload,
     }).then((res)=>{
       if(res.statusText !== 'OK') return;
-      console.log(res);
       showSnackbar(`Successfully created task ${res.data.taskID}`)
     }).catch((e)=>{
       showSnackbar(e);
@@ -106,8 +105,8 @@ export default function MailScan() {
       setCount(res.data["@odata.count"])
       setLoading(false);
     })
-    .catch((e)=>{
-      console.log(e)
+    .catch((e: AxiosError)=>{
+      showSnackbar(e.message)
       setLoading(false);
     })
   },[data, unauthenticated, rowsPerPage, page])

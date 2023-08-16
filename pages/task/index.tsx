@@ -1,3 +1,4 @@
+import {useSnackbar} from '@/hooks/useSnackBar';
 import DoneIcon from '@mui/icons-material/Done';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -8,7 +9,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import axios from "axios";
+import axios, {AxiosError} from "axios";
 import {useSession} from "next-auth/react";
 import Link from 'next/link';
 import {useEffect, useState} from "react";
@@ -23,11 +24,18 @@ export default function Task() {
     const [refreshKey, setRefereshKey] = useState(0);
     const { data, status } = useSession();
     const [tasks, setTasks] = useState<TaskResponse[]>()
+    const showSnackbar = useSnackbar();
+
     useEffect(()=>{
         if(!data) return;
-        axios.get(`http://localhost:8777/checkTask?userID=${data.user.email}`).then((res)=>{
+        axios.get(`http://localhost:8777/checkTask?userID=${data.user.email}`)
+        .then((res)=>{
             if(res.statusText !== 'OK') return;
+            console.log(res)
             setTasks(res.data);
+        })
+        .catch((e: AxiosError) => {
+            showSnackbar(e.message)
         });
 
     },[refreshKey, data])
