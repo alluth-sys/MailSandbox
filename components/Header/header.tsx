@@ -92,7 +92,7 @@ export default function Header() {
             </Link>
           </li>
           <li className={styles.navItem}>
-            <Link href='/task' passHref>
+            <Link href='/task/mail' passHref>
             <Button variant='text'>
                 Task
             </Button>
