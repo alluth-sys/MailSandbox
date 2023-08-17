@@ -26,9 +26,9 @@ export default function DocScan() {
     axios.post(`http://localhost:8777/uploadDocument`,formData)
     .then((res)=>{
       if(res.statusText !== 'OK') return
-      showSnackbar(`Successfully create task: ${res.data.taskID}`)
+      showSnackbar(`✅ Successfully create task: ${res.data.taskID}`)
     }).catch((e: AxiosError)=>{
-      showSnackbar(e.message)
+      showSnackbar(`⚠️ ${e.message}`)
     })
   }  
   return (
