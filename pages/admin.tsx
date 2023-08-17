@@ -1,4 +1,5 @@
-import axios from 'axios';
+import {useSnackbar} from '@/hooks/useSnackBar';
+import axios, {AxiosError} from 'axios';
 import {useSession} from 'next-auth/react';
 import {useEffect, useState} from 'react';
 import AccessDenied from '../components/AccessDenied/access-denied';
@@ -9,6 +10,7 @@ export default function Page() {
   const unauthenticated = status === 'unauthenticated';
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState<microsoftgraph.User>();
+  const showSnackbar = useSnackbar();
 
   useEffect(()=>{
     if(!data || unauthenticated) return
@@ -20,8 +22,8 @@ export default function Page() {
       if(res.statusText !== 'OK') return;
       setUserData(res.data)
     })
-    .catch((e)=>{
-      console.log(e)
+    .catch((e: AxiosError)=>{
+      showSnackbar(e.message)
       setLoading(false);
     })
   },[data, unauthenticated])

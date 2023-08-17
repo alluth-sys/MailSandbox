@@ -15,3 +15,27 @@
     align-items: center;
     color: orange;
 }
+
+.report-card{
+    padding: 1rem;
+    width: 50%;
+}
+
+.file-icon{
+    color: #084cdf;
+}
+
+.file-list{
+    display: flex;
+    align-items: center;
+}
+
+.report-list{
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.image{
+    width: 100px;
+    height: 100px;
+}

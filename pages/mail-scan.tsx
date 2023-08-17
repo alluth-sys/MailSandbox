@@ -109,7 +109,7 @@ export default function MailScan() {
       showSnackbar(e.message)
       setLoading(false);
     })
-  },[data, unauthenticated, rowsPerPage, page])
+  },[data, unauthenticated, rowsPerPage, page, showSnackbar])
 
   if (!data) {
     return (
