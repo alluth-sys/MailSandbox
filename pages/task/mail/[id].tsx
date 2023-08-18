@@ -18,20 +18,6 @@ export default function TaskDetail() {
     const [results, setResults] = useState<ResultResponse[]>();
     const showSnackbar = useSnackbar();
 
-    const generateCurrentTimestamp = () => {
-        const currentdate = new Date(); 
-        const datetime = "Last Updated: " + 
-                        (currentdate.getMonth()+1) + "/" 
-                        + currentdate.getDate() + "/"
-                        + currentdate.getFullYear() + " @ "  
-                        + currentdate.getHours() + ":"  
-                        + currentdate.getMinutes() + ":" 
-                        + currentdate.getSeconds();
-        
-        return datetime;
-    }
-
-
     useEffect(()=>{
         if(!router.query.id) return
         axios.get(`http://localhost:8777/showResult?taskID=${router.query.id}`)
