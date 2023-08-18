@@ -3,6 +3,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 import CrisisAlertIcon from '@mui/icons-material/CrisisAlert';
 import {Paper} from '@mui/material';
 import axios, {AxiosError} from 'axios';
+import moment from 'moment';
 import {useRouter} from 'next/router';
 import {useEffect, useState} from 'react';
 import styles from '../../../styles/Task.module.css';
@@ -47,7 +48,7 @@ export default function TaskDetail() {
     <>  
         <Paper className={styles['report-card']}>
             <h3>Generated Report</h3>
-            <div style={{marginBottom:"0.5rem", color:"gray", fontSize:"small"}}>{generateCurrentTimestamp()}</div>
+            <div style={{marginBottom:"0.5rem", color:"gray", fontSize:"small"}}>{moment().format('MMMM Do YYYY, h:mm:ss a')}</div>
             <div>
             {results?.map((v,i)=>{
                 return(

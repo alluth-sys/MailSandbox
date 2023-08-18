@@ -1,4 +1,5 @@
 import PageNavigator from "@/components/PageNavigator/page-navigator";
+import ProgressSpinner from "@/components/ProgressSpinner/ProgressSpinner";
 import {useSnackbar} from "@/hooks/useSnackBar";
 import RefreshIcon from '@mui/icons-material/Refresh';
 import {Button} from "@mui/material";
@@ -9,6 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import axios, {AxiosError} from "axios";
+import moment from "moment-timezone";
 import {useSession} from "next-auth/react";
 import Link from "next/link";
 import {useEffect, useState} from "react";
@@ -21,6 +23,9 @@ interface TaskResponse{
   createTime: string
 }
 
+const TaskStatuses = ['init','finish_static_report','start_generating_shot','start_dynamic_analysis','start_generating_aftershot',
+                        'start_processing_file','generating_report','report_upload_success']
+
 export default function Document() {
   const [refreshKey, setRefereshKey] = useState(0);
   const { data } = useSession();
@@ -32,7 +37,6 @@ export default function Document() {
       axios.get(`http://localhost:8777/getTaskStatus`)
       .then((res)=>{
           if(res.statusText !== 'OK') return;
-          console.log(res.data)
           setTasks(res.data);
       })
       .catch((e: AxiosError) => {
@@ -45,20 +49,40 @@ export default function Document() {
       setRefereshKey((prev)=> prev+1);
   }
 
+  const checkIsTaskFinished = (state:string) => {
+        if(state !== 'report_upload_success') return false;
+        return true;
+  }
+
+  const getProgress = (state:string) => {
+        if (TaskStatuses.indexOf(state) === -1) return 0;
+
+        return ((TaskStatuses.indexOf(state)+1)/8)*100
+  }
+
+  function capitalizeEveryWord(str: string): string {
+    return str.split('_')
+              .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+              .join(' ');
+}
+
   return (
     <div>
         <PageNavigator/>
+        
         <TableContainer>
             <Table className={styles['task-table']} aria-label="tasks table">
                 <TableHead>
                     <TableRow>
-                        <TableCell><strong>Task ID</strong></TableCell>
+                        <TableCell><strong>File Name</strong></TableCell>
+                        <TableCell><strong>Created At</strong></TableCell>
                         <TableCell>
                             <strong>Status</strong> 
                             <Button onClick={onRefresh}>
                                 <RefreshIcon />
                             </Button>
                         </TableCell>
+                       
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -69,11 +93,22 @@ export default function Document() {
                           hover={true}
                           >
                               <TableCell component="th" scope="row">
-                                  <Link href={`/task/document/${task.id}`} passHref style={{ textDecoration: 'none', color:'black' }}>
-                                      {task.id.toUpperCase()}
-                                  </Link>
+                                      <Button variant="contained" disabled={!checkIsTaskFinished(task.status)}>
+                                        <Link 
+                                            href={`/task/document/${task.id}`} 
+                                            passHref 
+                                            style={{ textDecoration: 'none', color: checkIsTaskFinished(task.status) ? 'black': 'white' }}
+                                            >
+                                            {task.filename}
+                                        </Link>
+                                      </Button>
                               </TableCell>
-                              <TableCell>{task.status}</TableCell>
+                              <TableCell>{moment.utc(task.createTime).tz("Asia/Taipei").format('MMMM Do YYYY, h:mm:ss a')}</TableCell>
+                              <TableCell style={{display:"flex", alignItems:"center", gap:"1rem"}}>
+                                {capitalizeEveryWord(task.status)}
+                                <ProgressSpinner value={getProgress(task.status)}/>
+                                </TableCell>
+                             
                           </TableRow>
                       ))}
                 </TableBody>
