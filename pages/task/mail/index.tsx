@@ -11,6 +11,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import axios, {AxiosError} from "axios";
+import moment from "moment-timezone";
 import {useSession} from "next-auth/react";
 import Link from 'next/link';
 import {useEffect, useState} from "react";
@@ -20,6 +21,7 @@ interface TaskResponse{
     taskID: string,
     isFinish: boolean,
     subjects: string[],
+    createdTime: string,
 }
 
 export default function Task() {
@@ -74,7 +76,9 @@ export default function Task() {
             <Table className={styles['task-table']} aria-label="tasks table">
                 <TableHead>
                     <TableRow>
-                        <TableCell><strong>File Name</strong></TableCell>
+                        <TableCell><strong>Task ID</strong></TableCell>
+                        <TableCell><strong>Created At</strong></TableCell>
+                        <TableCell><strong>Action</strong></TableCell>
                         <TableCell>
                             <strong>Status</strong> 
                             <Button onClick={onRefresh}>
@@ -90,12 +94,16 @@ export default function Task() {
                         hover={true}
                         >
                             <TableCell component="th" scope="row" >
-                                <Button variant="contained" disabled={!task.isFinish}>
-                                    <Link href={`/task/mail/${task.taskID}`} passHref style={{ textDecoration: 'none', color:'white' }}>
-                                        {joinArray(task.subjects)}
-                                    </Link>
-                                </Button>
-                                
+                            {`${task.subjects.length}個文件` + `, 任務序號：${task.taskID.split('-')[0].toUpperCase()}`}
+                            </TableCell>
+                           
+                            <TableCell>{moment.utc(task.createdTime).tz("Asia/Taipei").format('MMMM Do YYYY, h:mm:ss a')}</TableCell>
+                            <TableCell>
+                            <Button variant="contained" disabled={!task.isFinish}>
+                                <Link href={`/task/mail/${task.taskID}`} passHref style={{ textDecoration: 'none', color:'white' }}>
+                                        View
+                                </Link>
+                            </Button>
                             </TableCell>
                             <TableCell>{checkStatus(task.isFinish)}</TableCell>
                         </TableRow>
@@ -106,3 +114,5 @@ export default function Task() {
         </div>
   )
 }
+
+

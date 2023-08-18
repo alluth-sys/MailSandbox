@@ -18,7 +18,6 @@ export default function DocumentDetail() {
   },[router])
 
   const URLToResource = (filename: string) =>{
-    
     return `https://storage.googleapis.com/kowala-result/${id}_${filename}`
   }
 
@@ -70,6 +69,25 @@ export default function DocumentDetail() {
     </div>
     <div style={{display:"flex", width:"50%", gap:"5rem"}}>
     <div style={{width:"100%"}}>
+      <Typography variant="h6">Static Analysis</Typography>
+      <Paper style={{marginTop:"1rem", marginBottom:"1rem"}}>
+        <List aria-label="static-analysis-list">
+          <ListItemButton href={URLToResource('trid.txt')}>
+            <ListItemIcon>
+            <ArticleIcon className={styles['file-icon']}/>
+            </ListItemIcon>
+            <ListItemText primary="Trid" />
+          </ListItemButton>
+          <ListItemButton href={URLToResource('pdfparser.txt')}>
+            <ListItemIcon>
+            <ArticleIcon className={styles['file-icon']}/>
+            </ListItemIcon>
+            <ListItemText primary="Parser" />
+          </ListItemButton>
+      </List>
+      </Paper>
+    </div>
+    <div style={{width:"100%"}}>
     <Typography variant="h6">Dynamic Analysis</Typography>
       <Paper style={{marginTop:"1rem", marginBottom:"1rem"}}>
         <List aria-label="static-analysis-list">
@@ -106,27 +124,7 @@ export default function DocumentDetail() {
       </List>
       </Paper>
     </div>
-    <div style={{width:"100%"}}>
-      <Typography variant="h6">Static Analysis</Typography>
-      <Paper style={{marginTop:"1rem", marginBottom:"1rem"}}>
-        <List aria-label="static-analysis-list">
-          <ListItemButton href={URLToResource('trid.txt')}>
-            <ListItemIcon>
-            <ArticleIcon className={styles['file-icon']}/>
-            </ListItemIcon>
-            <ListItemText primary="Trid" />
-          </ListItemButton>
-          <ListItemButton href={URLToResource('pdfparser.txt')}>
-            <ListItemIcon>
-            <ArticleIcon className={styles['file-icon']}/>
-            </ListItemIcon>
-            <ListItemText primary="Parser" />
-          </ListItemButton>
-      </List>
-      </Paper>
     </div>
-    </div>
-    
   </div>
   )
 }

@@ -76,6 +76,7 @@ export default function Document() {
                     <TableRow>
                         <TableCell><strong>File Name</strong></TableCell>
                         <TableCell><strong>Created At</strong></TableCell>
+                        <TableCell><strong>Action</strong></TableCell>
                         <TableCell >
                             <strong>Status</strong> 
                             <Button onClick={onRefresh}>
@@ -93,17 +94,20 @@ export default function Document() {
                           hover={true}
                           >
                               <TableCell component="th" scope="row" style={{width:"50%"}}>
-                                      <Button variant="contained" disabled={!checkIsTaskFinished(task.status)}>
+                              {task.filename}
+                              </TableCell>
+                              <TableCell>{moment.utc(task.createTime).tz("Asia/Taipei").format('MMMM Do YYYY, h:mm:ss a')}</TableCell>
+                              <TableCell>
+                              <Button variant="contained" disabled={!checkIsTaskFinished(task.status)}>
                                         <Link 
                                             href={`/task/document/${task.id}`} 
                                             passHref 
                                             style={{ textDecoration: 'none', color:'white' }}
-                                            >
-                                            {task.filename}
+                                        >
+                                        View
                                         </Link>
                                       </Button>
                               </TableCell>
-                              <TableCell>{moment.utc(task.createTime).tz("Asia/Taipei").format('MMMM Do YYYY, h:mm:ss a')}</TableCell>
                               <TableCell align="justify">
                                 <div style={{display:'flex', alignItems:'center', gap:'1rem'}}>
                                     {capitalizeEveryWord(task.status)}
