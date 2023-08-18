@@ -5,20 +5,14 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Image from "next/image";
 import {useRouter} from "next/router";
-import {useEffect, useState} from "react";
 import styles from '../../../styles/Task.module.css';
 
 export default function DocumentDetail() {
   const router = useRouter()
-  const [documentID, setDocumentID] = useState<string|string[]>();
-
-  useEffect(()=>{
-    if(!router.query.id) return
-    setDocumentID(documentID);
-  },[router.query.id])
 
   const URLToResource = (filename: string) =>{
-    return `https://storage.googleapis.com/kowala-result/${documentID}_${filename}`
+    if(!router.query.id) return
+    return `https://storage.googleapis.com/kowala-result/${router.query.id}_${filename}`
   }
 
   return (
