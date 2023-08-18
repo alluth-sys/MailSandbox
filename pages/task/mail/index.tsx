@@ -4,6 +4,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import {Button} from "@mui/material";
 import CircularProgress from '@mui/material/CircularProgress';
+import LinearProgress from '@mui/material/LinearProgress';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -26,19 +27,23 @@ interface TaskResponse{
 
 export default function Task() {
     const [refreshKey, setRefereshKey] = useState(0);
+    const [loading, setLoading] = useState(false);
     const { data } = useSession();
     const [tasks, setTasks] = useState<TaskResponse[]>()
     const showSnackbar = useSnackbar();
 
     useEffect(()=>{
         if(!data) return;
+        setLoading(true)
         axios.get(`http://localhost:8777/checkTask?userID=${data.user.email}`)
         .then((res)=>{
             if(res.statusText !== 'OK') return;
             setTasks(res.data);
+            setLoading(false)
         })
         .catch((e: AxiosError) => {
             showSnackbar(e.message)
+            setLoading(false)
         });
 
     },[refreshKey, data, showSnackbar])
@@ -64,14 +69,10 @@ export default function Task() {
 
     }
 
-    const joinArray = (subjects: string[]) => {
-        if(!subjects) return;
-        return subjects.join(', ')
-    }
-
   return (
     <div>
         <PageNavigator/>
+        {loading && <LinearProgress />}
         <TableContainer>
             <Table className={styles['task-table']} aria-label="tasks table">
                 <TableHead>

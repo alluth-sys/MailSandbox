@@ -2,7 +2,7 @@ import PageNavigator from "@/components/PageNavigator/page-navigator";
 import ProgressSpinner from "@/components/ProgressSpinner/ProgressSpinner";
 import {useSnackbar} from "@/hooks/useSnackBar";
 import RefreshIcon from '@mui/icons-material/Refresh';
-import {Button} from "@mui/material";
+import {Button, LinearProgress} from "@mui/material";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -28,18 +28,22 @@ const TaskStatuses = ['init','finish_static_report','start_generating_shot','sta
 
 export default function Document() {
   const [refreshKey, setRefereshKey] = useState(0);
+  const [loading, setLoading] = useState(false);
   const { data } = useSession();
   const [tasks, setTasks] = useState<TaskResponse[]>()
   const showSnackbar = useSnackbar();
 
   useEffect(()=>{
       if(!data) return;
+      setLoading(true);
       axios.get(`http://localhost:8777/getTaskStatus`)
       .then((res)=>{
           if(res.statusText !== 'OK') return;
           setTasks(res.data);
+          setLoading(false);
       })
       .catch((e: AxiosError) => {
+        setLoading(false)
           showSnackbar(e.message)
       });
 
@@ -69,7 +73,7 @@ export default function Document() {
   return (
     <div>
         <PageNavigator/>
-        
+        {loading && <LinearProgress/>}
         <TableContainer>
             <Table className={styles['task-table']} aria-label="tasks table">
                 <TableHead>
@@ -93,7 +97,7 @@ export default function Document() {
                           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                           hover={true}
                           >
-                              <TableCell component="th" scope="row" style={{width:"50%"}}>
+                              <TableCell component="th" scope="row">
                               {task.filename}
                               </TableCell>
                               <TableCell>{moment.utc(task.createTime).tz("Asia/Taipei").format('MMMM Do YYYY, h:mm:ss a')}</TableCell>

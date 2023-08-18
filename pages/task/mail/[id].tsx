@@ -31,10 +31,12 @@ export default function TaskDetail() {
     },[router.query.id, showSnackbar])
 
   return (
-    <>  
+    <div style={{width:"100%", display:"flex", justifyContent:"center"}}>  
         <Paper className={styles['report-card']}>
             <h3>Generated Report</h3>
-            <div style={{marginBottom:"0.5rem", color:"gray", fontSize:"small"}}>{moment().format('MMMM Do YYYY, h:mm:ss a')}</div>
+            <div style={{marginBottom:"0.5rem", color:"gray", fontSize:"small"}}>
+                {`Last updated: ${moment().format('MMMM Do YYYY, h:mm:ss a')}`}
+            </div>
             <div>
             {results?.map((v,i)=>{
                 return(
@@ -65,6 +67,6 @@ export default function TaskDetail() {
             })}
         </div>
         </Paper>  
-    </>
+    </div>
   )
 }
