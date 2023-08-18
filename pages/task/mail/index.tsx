@@ -1,9 +1,9 @@
 import PageNavigator from '@/components/PageNavigator/page-navigator';
 import {useSnackbar} from '@/hooks/useSnackBar';
 import DoneIcon from '@mui/icons-material/Done';
-import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import {Button} from "@mui/material";
+import CircularProgress from '@mui/material/CircularProgress';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -18,7 +18,8 @@ import styles from '../../../styles/Task.module.css';
 
 interface TaskResponse{
     taskID: string,
-    isFinish: boolean
+    isFinish: boolean,
+    subjects: string[],
 }
 
 export default function Task() {
@@ -54,11 +55,15 @@ export default function Task() {
         }
 
         return(
-                <div className={styles['cell-load']}>
-                    <HourglassBottomIcon/>
+                <div>
+                    <CircularProgress style={{color:'orange'}} size={"1.5rem"}/>
                 </div>
         )
 
+    }
+
+    const joinArray = (subjects: string[]) => {
+        return subjects.join(', ')
     }
 
   return (
@@ -68,7 +73,7 @@ export default function Task() {
             <Table className={styles['task-table']} aria-label="tasks table">
                 <TableHead>
                     <TableRow>
-                        <TableCell><strong>Task ID</strong></TableCell>
+                        <TableCell><strong>File Name</strong></TableCell>
                         <TableCell>
                             <strong>Status</strong> 
                             <Button onClick={onRefresh}>
@@ -81,13 +86,15 @@ export default function Task() {
                     {tasks && tasks.map((task) => (
                         <TableRow
                         key={task.taskID}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         hover={true}
                         >
-                            <TableCell component="th" scope="row">
-                                <Link href={`/task/mail/${task.taskID}`} passHref style={{ textDecoration: 'none', color:'black' }}>
-                                    {task.taskID.toUpperCase()}
-                                </Link>
+                            <TableCell component="th" scope="row" >
+                                <Button variant="contained" disabled={!task.isFinish}>
+                                    <Link href={`/task/mail/${task.taskID}`} passHref style={{ textDecoration: 'none', color:'white' }}>
+                                        {joinArray(task.subjects)}
+                                    </Link>
+                                </Button>
+                                
                             </TableCell>
                             <TableCell>{checkStatus(task.isFinish)}</TableCell>
                         </TableRow>

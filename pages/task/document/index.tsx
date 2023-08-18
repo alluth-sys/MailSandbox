@@ -76,7 +76,7 @@ export default function Document() {
                     <TableRow>
                         <TableCell><strong>File Name</strong></TableCell>
                         <TableCell><strong>Created At</strong></TableCell>
-                        <TableCell>
+                        <TableCell >
                             <strong>Status</strong> 
                             <Button onClick={onRefresh}>
                                 <RefreshIcon />
@@ -92,21 +92,24 @@ export default function Document() {
                           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                           hover={true}
                           >
-                              <TableCell component="th" scope="row">
+                              <TableCell component="th" scope="row" style={{width:"50%"}}>
                                       <Button variant="contained" disabled={!checkIsTaskFinished(task.status)}>
                                         <Link 
                                             href={`/task/document/${task.id}`} 
                                             passHref 
-                                            style={{ textDecoration: 'none', color: checkIsTaskFinished(task.status) ? 'black': 'white' }}
+                                            style={{ textDecoration: 'none', color:'white' }}
                                             >
                                             {task.filename}
                                         </Link>
                                       </Button>
                               </TableCell>
                               <TableCell>{moment.utc(task.createTime).tz("Asia/Taipei").format('MMMM Do YYYY, h:mm:ss a')}</TableCell>
-                              <TableCell style={{display:"flex", alignItems:"center", gap:"1rem"}}>
-                                {capitalizeEveryWord(task.status)}
-                                <ProgressSpinner value={getProgress(task.status)}/>
+                              <TableCell align="justify">
+                                <div style={{display:'flex', alignItems:'center', gap:'1rem'}}>
+                                    {capitalizeEveryWord(task.status)}
+                                    <ProgressSpinner value={getProgress(task.status)}/>
+                                </div>
+                                
                                 </TableCell>
                              
                           </TableRow>

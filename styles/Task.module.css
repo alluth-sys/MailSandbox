@@ -1,6 +1,5 @@
 .task-table{
-    width: fit-content;
-    min-width: 80%;
+    max-width: 70%;
     border: 1px solid lightgray;
 }
 
@@ -38,4 +37,11 @@
 .image{
     width: 100px;
     height: 100px;
+}
+
+.row-cell{
+    width: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

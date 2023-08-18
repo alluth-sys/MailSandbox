@@ -81,9 +81,9 @@ export default function MailScan() {
       ...payload,
     }).then((res)=>{
       if(res.statusText !== 'OK') return;
-      showSnackbar(`Successfully created task ${res.data.taskID}`)
-    }).catch((e)=>{
-      showSnackbar(e);
+      showSnackbar(`✅ Successfully created task ${res.data.taskID}`)
+    }).catch((e:AxiosError)=>{
+      showSnackbar(`⚠️ ${e.message}`);
     })
   }
   
