@@ -63,6 +63,7 @@ export default function Task() {
     }
 
     const joinArray = (subjects: string[]) => {
+        if(!subjects) return;
         return subjects.join(', ')
     }
 
