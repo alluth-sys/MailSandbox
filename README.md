@@ -1,7 +1,6 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## Introduction
 * Mail scanning sandbox system frontend developed for the Institute for Information Industry (III) summer project. Provides intuitive interface for analyzing potentially malicious emails in an isolated environment.
+* Built using [Next.js](https://nextjs.org/)
 
 ## Getting Started
 First, install the npm packages:
